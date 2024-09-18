@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Foto/Video Uploader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        #uploadForm {
+            margin-bottom: 20px;
+        }
+        #gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        #gallery img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <h1>Event Foto/Video Uploader</h1>
+    
+    <form id="uploadForm">
+        <input type="file" id="fileInput" accept="image/*,video/*" multiple>
+        <button type="submit">Upload</button>
+    </form>
+
+    <script>
+        const BACKEND_URL = 'http://127.0.0.1:5000';  // Vervang dit met je echte backend URL
+
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('fileInput');
+            const formData = new FormData();
+
+            for (const file of fileInput.files) {
+                formData.append('files', file);
+            }
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (result.success) {
+                    alert('Bestanden succesvol geüpload!');
+                    updateGallery();
+                } else {
+                    alert('Er is een fout opgetreden bij het uploaden.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Er is een fout opgetreden bij het uploaden.');
+            }
+        });
+    </script>
+</body>
+</html>

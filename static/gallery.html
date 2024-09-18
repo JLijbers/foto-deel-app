@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Foto/Video Uploader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        #uploadForm {
+            margin-bottom: 20px;
+        }
+        #gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        #gallery img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div id="gallery">
+        <!-- Hier worden de geüploade bestanden weergegeven -->
+    </div>
+    <script>
+        async function updateGallery() {
+                try {
+                    const files = items;
+                    const gallery = document.getElementById('gallery');
+                    gallery.innerHTML = ''; // Clear existing gallery items
+
+                    files.forEach(file => {
+                        if (file.webViewLink) {
+                            // For images
+                            if (file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+                                const img = document.createElement('img');
+                                img.src = file.webViewLink;
+                                img.alt = file.name;
+                                gallery.appendChild(img);
+                            }
+                            // For videos
+                            else if (file.name.match(/\.(mp4|mov)$/)) {
+                                const video = document.createElement('video');
+                                video.src = file.webViewLink;
+                                video.controls = true;
+                                video.width = 200; // or any desired width
+                                gallery.appendChild(video);
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error updating gallery:', error);
+                }
+            }
+
+            // Ensure gallery updates on page load
+            updateGallery();
+    </script>
+</body>
+</html>
